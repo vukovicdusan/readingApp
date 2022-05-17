@@ -1,5 +1,6 @@
 import Wrapper from '../UI/Wrapper'
 import Region from '../UI/Region'
+import { NavLink } from 'react-router-dom'
 
 const Hero = () => {
 	return (
@@ -13,11 +14,24 @@ const Hero = () => {
 					What smart stuff do you want to do?
 				</h4>
 				<ul className="[ wrap ] [ margin-top-3 ]">
-					<li className="button"> What can I read?</li>
+					<NavLink
+						to={'/new-books'}
+						// activeClassName="active-list"
+						className="button"
+					>
+						{' '}
+						What can I read?
+					</NavLink>
 
-					<li className="button"> What have I read?</li>
+					<NavLink to={'/old-books'} className="button">
+						{' '}
+						What have I read?
+					</NavLink>
 
-					<li className="button"> What do I want to read?</li>
+					<NavLink to={'/wish-books'} className="button">
+						{' '}
+						What do I want to read?
+					</NavLink>
 				</ul>
 			</div>
 		</Region>

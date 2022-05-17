@@ -294,6 +294,11 @@ label {
 	color: var(--text-dark);
 }
 
+.active-list {
+	border-radius: 10px;
+	color: var(--text-dark);
+}
+
 /** ==== HEADER ==== */
 
 header {
