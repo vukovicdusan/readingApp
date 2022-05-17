@@ -1,0 +1,6 @@
+{
+	"editor.formatOnSave": true,
+	"editor.fontLigatures": false,
+	"prettier.semi": true,
+	"json.schemas": []
+}

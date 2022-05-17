@@ -1,5 +1,10 @@
+import Region from '../UI/Region'
 const OldBooksList = () => {
-	return <h2>This are the books human read</h2>
+	return (
+		<Region>
+			<h2>This are the books human already read</h2>
+		</Region>
+	)
 }
 
 export default OldBooksList

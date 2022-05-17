@@ -167,7 +167,7 @@ h6 {
 
 /** == GLOBAL FOCUS == */
 :focus {
-	outline: 1px dashed var(--color-red);
+	outline: 1px solid var(--color-red);
 	outline-offset: 0.25rem;
 }
 
@@ -176,7 +176,7 @@ input,
 select {
 	box-shadow: 0 2px 10px var(--color-shadow);
 	padding: var(--input-padding, 0.6rem);
-	border: 2px dashed;
+	border: 2px solid;
 	min-inline-size: 18rem;
 }
 
@@ -195,16 +195,26 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-	border: 2px dashed var(--color-red);
+	border: 2px solid var(--color-red);
 	-webkit-text-fill-color: inherit;
 	-webkit-box-shadow: 0 0 0px 1000px var(--background-light) inset;
 	/* transition: background-color 5000s ease-in-out 0s; */
 }
 
+input:focus + label {
+	top: -1.5rem;
+}
+
 label {
 	color: var(--color-red);
 	font-size: 0.9rem;
+	position: absolute;
+	left: 0;
+	top: 3rem;
+	/* transform: translateY(-50%); */
+	transition: 0.2s ease;
 }
+
 /** ======== UTILITY CLASSES ======== */
 /*Utility classea are reusable classes that do one simple job*/
 .color-red {
@@ -226,6 +236,10 @@ label {
 .margin-top-3 {
 	margin-top: var(--s3) !important;
 }
+
+.input-wrapper {
+	position: relative;
+}
 /** ======== COMPOSITION CLASSES ======== */
 /*Composition classes are reusable classes that make layout*/
 /** ==== WRAP ==== */
@@ -246,6 +260,20 @@ label {
 	padding-left: clamp(1.09rem, 1rem + 0.47vw, 1.33rem);
 	padding-right: clamp(1.09rem, 1rem + 0.47vw, 1.33rem);
 	position: relative;
+}
+
+/** ==== BOX ==== */
+.box {
+	padding: var(--s-1);
+	border: var(--border-1) solid;
+	--color-light: #fff;
+	--color-dark: #000;
+	color: var(--text-dark);
+	background-color: var(--background-secondary);
+}
+
+.box * {
+	color: inherit;
 }
 
 /** ==== REGION ==== */
@@ -305,7 +333,6 @@ header {
 	background-color: var(--background-primary);
 	padding-block: 0.5rem;
 	--wrap-justify: space-between;
-	margin-block-end: 5rem;
 }
 
 .logo {
@@ -317,4 +344,12 @@ header {
 /** ==== HERO ==== */
 #hero {
 	--stack-align: center;
+	text-align: center;
 }
+
+#hero img {
+	max-width: 10rem;
+	transform: rotate(90deg);
+}
+
+/** ==== NEW BOOKS REGION ====*/

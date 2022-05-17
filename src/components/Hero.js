@@ -1,6 +1,7 @@
-import Wrapper from '../UI/Wrapper'
-import Region from '../UI/Region'
-import { NavLink } from 'react-router-dom'
+import Wrapper from '../UI/Wrapper';
+import Region from '../UI/Region';
+import { NavLink, Outlet } from 'react-router-dom';
+import arrow from '../assets/css/img/arrow.png';
 
 const Hero = () => {
 	return (
@@ -11,31 +12,30 @@ const Hero = () => {
 					human!
 				</h1>
 				<h4 className="color-red">
-					What smart stuff do you want to do?
+					What smart stuff would you like to do today?
 				</h4>
+				<img src={arrow} alt="arrow" className="margin-top-2" />
 				<ul className="[ wrap ] [ margin-top-3 ]">
 					<NavLink
-						to={'/new-books'}
+						to="new-books"
 						// activeClassName="active-list"
 						className="button"
 					>
-						{' '}
 						What can I read?
 					</NavLink>
 
-					<NavLink to={'/old-books'} className="button">
-						{' '}
+					<NavLink to="old-books" className="button">
 						What have I read?
 					</NavLink>
 
-					<NavLink to={'/wish-books'} className="button">
-						{' '}
+					<NavLink to="wish-books" className="button">
 						What do I want to read?
 					</NavLink>
 				</ul>
 			</div>
+			<Outlet></Outlet>
 		</Region>
-	)
-}
+	);
+};
 
-export default Hero
+export default Hero;

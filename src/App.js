@@ -4,30 +4,36 @@ import { Fragment } from 'react'
 import Header from './components/Header'
 import Wrapper from './UI/Wrapper'
 import Hero from './components/Hero'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import NewBooksList from './components/NewBooksList'
 import OldBooksList from './components/OldBooksList'
 import WishBooksList from './components/WishBooksList'
+import Region from './UI/Region'
 
 function App() {
 	return (
 		<Fragment>
 			<Header></Header>
 			<Wrapper>
-				<Hero></Hero>
 				<Routes>
 					<Route
-						path="/new-books"
-						element={<NewBooksList></NewBooksList>}
+						path="/"
+						element={<Navigate replace to="/hero" />}
 					></Route>
-					<Route
-						path="/old-books"
-						element={<OldBooksList></OldBooksList>}
-					></Route>
-					<Route
-						path="/wish-books"
-						element={<WishBooksList></WishBooksList>}
-					></Route>
+					<Route path="/hero/*" element={<Hero></Hero>}>
+						<Route
+							path="new-books"
+							element={<NewBooksList></NewBooksList>}
+						></Route>
+						<Route
+							path="old-books"
+							element={<OldBooksList></OldBooksList>}
+						></Route>
+						<Route
+							path="wish-books"
+							element={<WishBooksList></WishBooksList>}
+						></Route>
+					</Route>
 				</Routes>
 			</Wrapper>
 		</Fragment>
