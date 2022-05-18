@@ -215,6 +215,10 @@ label {
 	transition: 0.2s ease;
 }
 
+.invalid-input {
+	border-color: red;
+}
+
 /** ======== UTILITY CLASSES ======== */
 /*Utility classea are reusable classes that do one simple job*/
 .color-red {
@@ -239,6 +243,10 @@ label {
 
 .input-wrapper {
 	position: relative;
+}
+
+.text-bold {
+	font-weight: bold;
 }
 /** ======== COMPOSITION CLASSES ======== */
 /*Composition classes are reusable classes that make layout*/
@@ -274,6 +282,24 @@ label {
 
 .box * {
 	color: inherit;
+}
+
+/** ==== THE FRAME ==== */
+.frame {
+	--n: 16;
+	--d: 9;
+	aspect-ratio: var(--n) / var(--d);
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.frame > img,
+.frame > video {
+	inline-size: 100%;
+	block-size: 100%;
+	object-fit: cover;
 }
 
 /** ==== REGION ==== */
@@ -353,8 +379,13 @@ header {
 }
 
 /** ==== NEW BOOKS REGION ====*/
-#new-books-region .box {
+#new-books-region {
 	transition: 0.2s ease;
+	--stack-space: 3rem;
+}
+
+#new-books-region img {
+	transform: rotate(0deg);
 }
 /**==== LOADER ==== */
 
@@ -377,7 +408,7 @@ header {
 	animation: dotFlashing 1s infinite linear alternate;
 	animation-delay: 0.5s;
 	margin-inline-start: 1.5rem;
-	margin-block-start: 0.4rem;
+	margin-block-start: 0.5rem;
 }
 
 .three-dots::before,

@@ -1,28 +1,52 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useReducer } from 'react';
+import fetchBooksReducer from '../reducers/fetchBooksReducer';
 import Region from '../UI/Region';
+
+const reducerInit = {
+	searchedBook: '',
+	foundBook: {},
+	bookIsLoading: false,
+	fetchError: null,
+	searchValid: false,
+	touched: false,
+	bookFetched: false,
+};
 
 const NewBooksList = () => {
 	const booksListRef = useRef();
-	const [searchedBook, setSearchedBook] = useState('');
-	const [foundBook, setFoundBook] = useState([]);
-	const [bookIsLoading, setBookIsLoading] = useState(false);
-	const [fetchError, setFetchError] = useState(null);
+
+	const [bookState, dispatch] = useReducer(fetchBooksReducer, reducerInit);
 
 	const onSearchBookHandler = (e) => {
-		e.preventDefault();
-		setSearchedBook(e.target.value);
+		dispatch({
+			type: 'SEARCH',
+			payload: e.target.value,
+		});
+	};
+
+	const onBlurHandler = () => {
+		dispatch({
+			type: 'BLUR',
+		});
 	};
 
 	const searchSubmitHandler = (e) => {
 		e.preventDefault();
-		fetchBooks();
+
+		dispatch({
+			type: 'SUBMIT',
+		});
+
+		bookState.searchValid && fetchBooks();
 	};
 
 	const fetchBooks = async () => {
-		setBookIsLoading(true);
+		dispatch({
+			type: 'FETCH_INIT',
+		});
 		try {
 			const response = await fetch(
-				'http://openlibrary.org/search.json?q=' + searchedBook
+				'http://openlibrary.org/search.json?q=' + bookState.searchedBook
 			);
 
 			if (!response.ok) {
@@ -34,18 +58,21 @@ const NewBooksList = () => {
 			const loadedBook = {
 				title: responseData.docs[0].title,
 				author: responseData.docs[0].author_name[0],
+				isbn: responseData.docs[0].isbn[0],
 			};
-			setFoundBook(loadedBook);
+			console.log(loadedBook);
+			dispatch({ type: 'FETCH_SUCCESS', payload: loadedBook });
 		} catch (error) {
-			setFetchError(
-				'Error! I fell down the stairs while fetching your book!'
-			);
+			dispatch({
+				type: 'FETCH_FAILURE',
+				payload:
+					'Error! I fell down the stairs while fetching your book!',
+			});
 		}
-		setBookIsLoading(false);
 	};
 	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION */
 	useEffect(() => {
-		bookBox !== '' && scrollIntoView();
+		scrollIntoView();
 	});
 
 	const scrollIntoView = () => {
@@ -55,33 +82,41 @@ const NewBooksList = () => {
 		});
 	};
 
-	let bookBox = '';
-	if (
-		typeof foundBook.title !== 'undefined' &&
-		!bookIsLoading &&
-		fetchError === null &&
-		searchedBook !== ''
-	) {
+	let bookBox = (
+		<div ref={booksListRef} className="[ frame ] [ box ] [ wrap ]">
+			<p>No books here at the moment.</p>
+			<h4>You have to search.</h4>
+		</div>
+	);
+
+	let bookCoverSrc =
+		'http://covers.openlibrary.org/b/isbn/' +
+		bookState.foundBook.isbn +
+		'-M.jpg';
+
+	if (!bookState.bookIsLoading && bookState.bookFetched) {
 		bookBox = (
-			<div ref={booksListRef} className="box">
-				<h4>{foundBook.title}</h4>
-				<p>by: {foundBook.author}</p>
+			<div ref={booksListRef} className="[ frame ] [ box ] [ wrap ]">
+				<img src={bookCoverSrc} alt="" />
+				<div className="stack">
+					<h4>{bookState.foundBook.title}</h4>
+					<p>
+						by the author:{' '}
+						<span className="text-bold">
+							{bookState.foundBook.author}
+						</span>
+					</p>
+				</div>
 			</div>
 		);
-	} else if (fetchError !== null) {
+	} else if (bookState.fetchError !== null) {
 		bookBox = (
-			<div ref={booksListRef} className="box">
-				<p className="color-red">{fetchError}</p>
-			</div>
-		);
-	} else {
-		bookBox = (
-			<div ref={booksListRef} className="box">
-				<h4>No books here...</h4>
-				<p>You have to search.</p>
+			<div ref={booksListRef} className="[ frame ] [ box ] [ wrap ]">
+				<p className="color-red">{bookState.fetchError}</p>
 			</div>
 		);
 	}
+	let inputInvalid = bookState.touched && !bookState.searchValid;
 	return (
 		<Region regionId={'new-books-region'}>
 			<div className="stack">
@@ -91,21 +126,29 @@ const NewBooksList = () => {
 							onChange={onSearchBookHandler}
 							id="book-name"
 							type="text"
+							onBlur={onBlurHandler}
+							className={inputInvalid ? 'invalid-input' : ''}
 						/>
-						<label htmlFor="book-name">Book Name</label>
+						<label htmlFor="book-name">
+							{inputInvalid
+								? 'Give me a book human!'
+								: 'Book Name'}
+						</label>
 					</div>
 					<button onClick={searchSubmitHandler} className="button">
 						Search
 					</button>
 				</form>
-				{bookIsLoading && (
+
+				{/* <div ref={booksListRef} className="[ frame ] [ box ]"> */}
+				{bookBox}
+				{/* </div> */}
+				{bookState.bookIsLoading && (
 					<div className="loader-container">
-						<p>Lifting heavy things</p>
+						<p>Searching for your book</p>
 						<span className="three-dots"></span>
 					</div>
 				)}
-
-				{bookBox}
 			</div>
 		</Region>
 	);
