@@ -273,7 +273,7 @@ label {
 /** ==== BOX ==== */
 .box {
 	padding: var(--s-1);
-	border: var(--border-1) solid;
+	border: var(--s-5) solid;
 	--color-light: #fff;
 	--color-dark: #000;
 	color: var(--text-dark);
@@ -295,8 +295,7 @@ label {
 	align-items: center;
 }
 
-.frame > img,
-.frame > video {
+.frame > img {
 	inline-size: 100%;
 	block-size: 100%;
 	object-fit: cover;
@@ -328,11 +327,13 @@ label {
 }
 
 /** ==== BUTTON ==== */
-.button {
+.button,
+.button-small {
 	display: inline-block;
 	padding: var(--s-1, 0.8rem) var(--s2, 2.5rem);
 	border: solid 3px var(--color-red);
-	color: var(--color-red);
+	border-radius: 10px;
+	color: var(--text-dark);
 	background-color: var(--background-secondary);
 	cursor: pointer;
 	line-height: 1;
@@ -343,9 +344,15 @@ label {
 	transition: all 0.2s ease;
 }
 
-.button:hover {
-	border-radius: 10px;
-	color: var(--text-dark);
+.button-small {
+	padding: var(--s-2) var(--s1);
+	font-size: var(--s-1);
+}
+
+.button:hover,
+.button-small:hover {
+	border-radius: 0;
+	color: var(--color-red);
 }
 
 .active-list {
@@ -381,12 +388,26 @@ header {
 /** ==== NEW BOOKS REGION ====*/
 #new-books-region {
 	transition: 0.2s ease;
-	--stack-space: 3rem;
+	--stack-space: var(--s3);
 }
 
 #new-books-region img {
 	transform: rotate(0deg);
 }
+
+.book-box .stack {
+	--stack-space: var(--s0);
+	/* --stack-align: flex-start;
+	--stack-justify: flex-start; */
+}
+.book-box.box {
+	padding: var(--s0);
+	border-color: var(--text-dark);
+	box-shadow: var(--box-shadow);
+}
+/* .book-box {
+	box-shadow: var(--box-shadow);
+} */
 /**==== LOADER ==== */
 
 .loader-container {

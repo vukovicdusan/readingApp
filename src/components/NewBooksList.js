@@ -83,8 +83,8 @@ const NewBooksList = () => {
 	};
 
 	let bookBox = (
-		<div ref={booksListRef} className="[ frame ] [ box ] [ wrap ]">
-			<p>No books here at the moment.</p>
+		<div ref={booksListRef} className="[ box ]">
+			<p>No books here at the moment milord.</p>
 			<h4>You have to search.</h4>
 		</div>
 	);
@@ -96,7 +96,10 @@ const NewBooksList = () => {
 
 	if (!bookState.bookIsLoading && bookState.bookFetched) {
 		bookBox = (
-			<div ref={booksListRef} className="[ frame ] [ box ] [ wrap ]">
+			<div
+				ref={booksListRef}
+				className="[ book-box ] [ frame ] [ box ] [ wrap ]"
+			>
 				<img src={bookCoverSrc} alt="" />
 				<div className="stack">
 					<h4>{bookState.foundBook.title}</h4>
@@ -106,6 +109,10 @@ const NewBooksList = () => {
 							{bookState.foundBook.author}
 						</span>
 					</p>
+					<div className="wrap">
+						<button className="button-small">Already read</button>
+						<button className="button-small">Want to read</button>
+					</div>
 				</div>
 			</div>
 		);
