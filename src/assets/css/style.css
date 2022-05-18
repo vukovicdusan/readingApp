@@ -218,7 +218,7 @@ label {
 /** ======== UTILITY CLASSES ======== */
 /*Utility classea are reusable classes that do one simple job*/
 .color-red {
-	color: var(--color-red);
+	color: var(--color-red) !important;
 }
 
 .text-underline {
@@ -353,3 +353,63 @@ header {
 }
 
 /** ==== NEW BOOKS REGION ====*/
+#new-books-region .box {
+	transition: 0.2s ease;
+}
+/**==== LOADER ==== */
+
+.loader-container {
+	display: flex;
+	align-items: center;
+}
+
+.loader-container p {
+	font-size: var(--s1);
+	font-weight: bold;
+}
+.three-dots {
+	position: relative;
+	width: 5px;
+	height: 5px;
+	border-radius: 50px;
+	background-color: var(--text-dark);
+	color: var(--text-dark);
+	animation: dotFlashing 1s infinite linear alternate;
+	animation-delay: 0.5s;
+	margin-inline-start: 1.5rem;
+	margin-block-start: 0.4rem;
+}
+
+.three-dots::before,
+.three-dots::after {
+	content: '';
+	width: 5px;
+	height: 5px;
+	border-radius: 5px;
+	background-color: var(--text-dark);
+	color: var(--text-dark);
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	animation: dotFlashing 1s infinite alternate;
+}
+
+.three-dots::before {
+	left: -15px;
+	animation-delay: 0s;
+}
+
+.three-dots::after {
+	left: 15px;
+	animation-delay: 1s;
+}
+
+@keyframes dotFlashing {
+	0% {
+		background-color: var(--text-dark);
+	}
+	50%,
+	100% {
+		background-color: transparent;
+	}
+}

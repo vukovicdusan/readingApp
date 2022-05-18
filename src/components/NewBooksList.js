@@ -5,36 +5,48 @@ const NewBooksList = () => {
 	const booksListRef = useRef();
 	const [searchedBook, setSearchedBook] = useState('');
 	const [foundBook, setFoundBook] = useState([]);
+	const [bookIsLoading, setBookIsLoading] = useState(false);
+	const [fetchError, setFetchError] = useState(null);
 
-	const onSearchbookHandler = (e) => {
+	const onSearchBookHandler = (e) => {
 		e.preventDefault();
 		setSearchedBook(e.target.value);
-	};
-	useEffect(() => {
-		bookBox !== '' && scrollIntoView();
-	});
-
-	const fetchBooks = async () => {
-		const response = await fetch(
-			'http://openlibrary.org/search.json?q=' + searchedBook
-		);
-		const responseData = await response.json();
-
-		const loadedBook = {
-			title: responseData.docs[0].title,
-			author: responseData.docs[0].author_name[0],
-		};
-		// console.log(loadedBook);
-		setFoundBook(loadedBook);
 	};
 
 	const searchSubmitHandler = (e) => {
 		e.preventDefault();
 		fetchBooks();
-
-		console.log(foundBook);
 	};
-	// }, [])
+
+	const fetchBooks = async () => {
+		setBookIsLoading(true);
+		try {
+			const response = await fetch(
+				'http://openlibrary.org/search.json?q=' + searchedBook
+			);
+
+			if (!response.ok) {
+				throw new Error(
+					'Error! I fell down the stairs while fetching your book!'
+				);
+			}
+			const responseData = await response.json();
+			const loadedBook = {
+				title: responseData.docs[0].title,
+				author: responseData.docs[0].author_name[0],
+			};
+			setFoundBook(loadedBook);
+		} catch (error) {
+			setFetchError(
+				'Error! I fell down the stairs while fetching your book!'
+			);
+		}
+		setBookIsLoading(false);
+	};
+	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION */
+	useEffect(() => {
+		bookBox !== '' && scrollIntoView();
+	});
 
 	const scrollIntoView = () => {
 		booksListRef.current.scrollIntoView({
@@ -44,13 +56,29 @@ const NewBooksList = () => {
 	};
 
 	let bookBox = '';
-	if (typeof foundBook.title === 'undefined') {
-		bookBox = '';
-	} else {
+	if (
+		typeof foundBook.title !== 'undefined' &&
+		!bookIsLoading &&
+		fetchError === null &&
+		searchedBook !== ''
+	) {
 		bookBox = (
 			<div ref={booksListRef} className="box">
 				<h4>{foundBook.title}</h4>
 				<p>by: {foundBook.author}</p>
+			</div>
+		);
+	} else if (fetchError !== null) {
+		bookBox = (
+			<div ref={booksListRef} className="box">
+				<p className="color-red">{fetchError}</p>
+			</div>
+		);
+	} else {
+		bookBox = (
+			<div ref={booksListRef} className="box">
+				<h4>No books here...</h4>
+				<p>You have to search.</p>
 			</div>
 		);
 	}
@@ -60,7 +88,7 @@ const NewBooksList = () => {
 				<form action="" className="wrap">
 					<div className="input-wrapper">
 						<input
-							onChange={onSearchbookHandler}
+							onChange={onSearchBookHandler}
 							id="book-name"
 							type="text"
 						/>
@@ -70,6 +98,12 @@ const NewBooksList = () => {
 						Search
 					</button>
 				</form>
+				{bookIsLoading && (
+					<div className="loader-container">
+						<p>Lifting heavy things</p>
+						<span className="three-dots"></span>
+					</div>
+				)}
 
 				{bookBox}
 			</div>
