@@ -4,7 +4,7 @@ import Region from '../UI/Region';
 
 const reducerInit = {
 	searchedBook: '',
-	foundBook: {},
+	foundBook: [],
 	bookIsLoading: false,
 	fetchError: null,
 	searchValid: false,
@@ -54,25 +54,36 @@ const NewBooksList = () => {
 					'Error! I fell down the stairs while fetching your book!'
 				);
 			}
-			const responseData = await response.json();
-			const loadedBook = {
-				title: responseData.docs[0].title,
-				author: responseData.docs[0].author_name[0],
-				isbn: responseData.docs[0].isbn[0],
-			};
-			console.log(loadedBook);
-			dispatch({ type: 'FETCH_SUCCESS', payload: loadedBook });
+			const data = await response.json();
+			console.log(typeof data.docs[0].isbn);
+			let loadedBooks = [];
+			for (let i = 0; i <= 5; i++) {
+				let author =
+					typeof data.docs[i].author_name === 'undefined'
+						? 'No author'
+						: data.docs[i].author_name[0];
+				loadedBooks.push({
+					author_name: author,
+					title: data.docs[i].title,
+					publishYear: data.docs[i].first_publish_year,
+					// isbn: data.docs[i].isbn[0],
+				});
+			}
+
+			dispatch({ type: 'FETCH_SUCCESS', payload: loadedBooks });
 		} catch (error) {
 			dispatch({
 				type: 'FETCH_FAILURE',
 				payload:
-					'Error! I fell down the stairs while fetching your book!',
+					'Error! I fell down the stairs while fetching your book!' +
+					error.message,
 			});
 		}
 	};
+
 	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION */
 	useEffect(() => {
-		scrollIntoView();
+		bookState.bookFetched && scrollIntoView();
 	});
 
 	const scrollIntoView = () => {
@@ -83,31 +94,33 @@ const NewBooksList = () => {
 	};
 
 	let bookBox = (
-		<div ref={booksListRef} className="[ box ]">
+		<div className="[ box ]">
 			<p>No books here at the moment milord.</p>
 			<h4>You have to search.</h4>
 		</div>
 	);
 
-	let bookCoverSrc =
-		'http://covers.openlibrary.org/b/isbn/' +
-		bookState.foundBook.isbn +
-		'-M.jpg';
+	// let bookCoverSrc =
+	// 	'http://covers.openlibrary.org/b/isbn/' +
+	// 	bookState.foundBook.isbn +
+	// 	'-M.jpg';
 
 	if (!bookState.bookIsLoading && bookState.bookFetched) {
-		bookBox = (
+		bookBox = bookState.foundBook.map((book, index) => (
 			<div
-				ref={booksListRef}
+				key={Math.random() + index}
 				className="[ book-box ] [ frame ] [ box ] [ wrap ]"
 			>
-				<img src={bookCoverSrc} alt="" />
+				{/* <img src={bookCoverSrc} alt="" /> */}
 				<div className="stack">
-					<h4>{bookState.foundBook.title}</h4>
+					<h4>{book.title}</h4>
 					<p>
 						by the author:{' '}
-						<span className="text-bold">
-							{bookState.foundBook.author}
-						</span>
+						<span className="text-bold">{book.author_name}</span>
+					</p>
+					<p>
+						Year of publishing:{' '}
+						<span className="text-bold">{book.publishYear}</span>
 					</p>
 					<div className="wrap">
 						<button className="button-small">Already read</button>
@@ -115,10 +128,10 @@ const NewBooksList = () => {
 					</div>
 				</div>
 			</div>
-		);
+		));
 	} else if (bookState.fetchError !== null) {
 		bookBox = (
-			<div ref={booksListRef} className="[ frame ] [ box ] [ wrap ]">
+			<div className="[ frame ] [ box ] [ wrap ]">
 				<p className="color-red">{bookState.fetchError}</p>
 			</div>
 		);
@@ -147,9 +160,7 @@ const NewBooksList = () => {
 					</button>
 				</form>
 
-				{/* <div ref={booksListRef} className="[ frame ] [ box ]"> */}
-				{bookBox}
-				{/* </div> */}
+				<div ref={booksListRef}>{bookBox}</div>
 				{bookState.bookIsLoading && (
 					<div className="loader-container">
 						<p>Searching for your book</p>
