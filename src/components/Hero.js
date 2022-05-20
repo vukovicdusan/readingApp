@@ -8,11 +8,13 @@ const Hero = () => {
 		<Region regionId={'hero'}>
 			<div className="stack">
 				<h1>
-					Hello my <span className="text-underline">smart</span>{' '}
-					human!
+					You <span className="text-underline">don't like</span>{' '}
+					reading books but here we are dear
+					<span className="text-underline"> reader!</span>
 				</h1>
 				<h4 className="color-red">
-					What smart stuff would you like to do today?
+					Let's find a book that your beautiful brain will never read
+					to the end!
 				</h4>
 				<img src={arrow} alt="arrow" className="margin-top-2" />
 				<ul className="[ wrap ] [ margin-top-3 ]">

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useReducer } from 'react';
 import fetchBooksReducer from '../reducers/fetchBooksReducer';
 import Region from '../UI/Region';
+import Wrapper from '../UI/Wrapper';
 
 const reducerInit = {
 	searchedBook: '',
@@ -55,7 +56,7 @@ const NewBooksList = () => {
 				);
 			}
 			const data = await response.json();
-			console.log(typeof data.docs[0].isbn);
+
 			let loadedBooks = [];
 			for (let i = 0; i <= 5; i++) {
 				let author =
@@ -66,7 +67,6 @@ const NewBooksList = () => {
 					author_name: author,
 					title: data.docs[i].title,
 					publishYear: data.docs[i].first_publish_year,
-					// isbn: data.docs[i].isbn[0],
 				});
 			}
 
@@ -84,7 +84,7 @@ const NewBooksList = () => {
 	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION */
 	useEffect(() => {
 		bookState.bookFetched && scrollIntoView();
-	});
+	}, [bookState.bookFetched]);
 
 	const scrollIntoView = () => {
 		booksListRef.current.scrollIntoView({
@@ -96,22 +96,18 @@ const NewBooksList = () => {
 	let bookBox = (
 		<div className="[ box ]">
 			<p>No books here at the moment milord.</p>
-			<h4>You have to search.</h4>
+			<h4>Just say the name of a book!</h4>
 		</div>
 	);
-
-	// let bookCoverSrc =
-	// 	'http://covers.openlibrary.org/b/isbn/' +
-	// 	bookState.foundBook.isbn +
-	// 	'-M.jpg';
 
 	if (!bookState.bookIsLoading && bookState.bookFetched) {
 		bookBox = bookState.foundBook.map((book, index) => (
 			<div
 				key={Math.random() + index}
-				className="[ book-box ] [ frame ] [ box ] [ wrap ]"
+				className="[ book-box ] [ box ] [ stack ]"
 			>
 				{/* <img src={bookCoverSrc} alt="" /> */}
+
 				<div className="stack">
 					<h4>{book.title}</h4>
 					<p>
@@ -122,53 +118,69 @@ const NewBooksList = () => {
 						Year of publishing:{' '}
 						<span className="text-bold">{book.publishYear}</span>
 					</p>
-					<div className="wrap">
-						<button className="button-small">Already read</button>
-						<button className="button-small">Want to read</button>
-					</div>
+				</div>
+
+				<div className="stack">
+					<button className="button-secondary button-small">
+						Already read
+					</button>
+					<button className="button-secondary button-small">
+						Want to read
+					</button>
 				</div>
 			</div>
 		));
 	} else if (bookState.fetchError !== null) {
 		bookBox = (
-			<div className="[ frame ] [ box ] [ wrap ]">
+			<div className="[ box ] [ wrap ]">
 				<p className="color-red">{bookState.fetchError}</p>
 			</div>
 		);
 	}
 	let inputInvalid = bookState.touched && !bookState.searchValid;
 	return (
-		<Region regionId={'new-books-region'}>
-			<div className="stack">
-				<form action="" className="wrap">
-					<div className="input-wrapper">
-						<input
-							onChange={onSearchBookHandler}
-							id="book-name"
-							type="text"
-							onBlur={onBlurHandler}
-							className={inputInvalid ? 'invalid-input' : ''}
-						/>
-						<label htmlFor="book-name">
-							{inputInvalid
-								? 'Give me a book human!'
-								: 'Book Name'}
-						</label>
-					</div>
-					<button onClick={searchSubmitHandler} className="button">
-						Search
-					</button>
-				</form>
+		<div className="full-bleed">
+			<Region regionId={'new-books-region'}>
+				<Wrapper>
+					<div className="stack">
+						<form action="" className="wrap">
+							<div className="input-wrapper">
+								<input
+									onChange={onSearchBookHandler}
+									id="book-name"
+									type="text"
+									onBlur={onBlurHandler}
+									className={
+										inputInvalid ? 'invalid-input' : ''
+									}
+								/>
+								<label htmlFor="book-name">
+									{inputInvalid
+										? 'Give me a book human!'
+										: 'Book Name'}
+								</label>
+							</div>
+							<button
+								onClick={searchSubmitHandler}
+								className="button-secondary"
+							>
+								Search
+							</button>
+						</form>
 
-				<div ref={booksListRef}>{bookBox}</div>
-				{bookState.bookIsLoading && (
-					<div className="loader-container">
-						<p>Searching for your book</p>
-						<span className="three-dots"></span>
+						<div ref={booksListRef} className="cluster">
+							{bookBox}
+						</div>
+						{bookState.bookIsLoading && (
+							<div className="loader-container">
+								<p>Searching for your book</p>
+								<span className="three-dots"></span>
+							</div>
+						)}
 					</div>
-				)}
-			</div>
-		</Region>
+				</Wrapper>
+			</Region>
+		</div>
 	);
 };
 
