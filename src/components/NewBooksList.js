@@ -17,7 +17,7 @@ const reducerInit = {
 
 const NewBooksList = () => {
 	const booksListRef = useRef();
-	const { books, listDispatch } = useContext(BooksContext);
+	const { listDispatch } = useContext(BooksContext);
 	const [bookState, dispatch] = useReducer(fetchBooksReducer, reducerInit);
 
 	const onSearchBookHandler = (e) => {
@@ -71,7 +71,7 @@ const NewBooksList = () => {
 				loadedBooks.push({
 					author_name: author,
 					title: data.docs[i].title,
-					publishYear: data.docs[i].first_publish_year,
+					published: data.docs[i].first_publish_year,
 				});
 			}
 

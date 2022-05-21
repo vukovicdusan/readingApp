@@ -64,6 +64,7 @@ const OldBooksList = (props) => {
 			);
 		});
 	}
+	console.log(books);
 	return (
 		<div className="[ full-bleed ] [ margin-top-3 ]">
 			<Region

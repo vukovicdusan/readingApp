@@ -491,3 +491,9 @@ header {
 		background-color: transparent;
 	}
 }
+
+/** ==== FOOTER ==== */
+footer {
+	border-top: 2px solid var(--color-red);
+	padding-block: var(--s-3);
+}
