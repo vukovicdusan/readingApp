@@ -8,7 +8,7 @@ const Region = (props) => {
 		regionId = '';
 	}
 	return (
-		<article id={regionId} className="region">
+		<article id={regionId} className={'region ' + props.regionBackground}>
 			{props.children}
 		</article>
 	);

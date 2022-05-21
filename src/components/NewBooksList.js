@@ -1,7 +1,9 @@
-import { useEffect, useRef, useReducer } from 'react';
+import { useEffect, useRef, useReducer, useContext } from 'react';
 import fetchBooksReducer from '../reducers/fetchBooksReducer';
 import Region from '../UI/Region';
 import Wrapper from '../UI/Wrapper';
+import { v4 as uuidv4 } from 'uuid';
+import { BooksContext } from '../context/BooksContext';
 
 const reducerInit = {
 	searchedBook: '',
@@ -15,7 +17,7 @@ const reducerInit = {
 
 const NewBooksList = () => {
 	const booksListRef = useRef();
-
+	const { books, listDispatch } = useContext(BooksContext);
 	const [bookState, dispatch] = useReducer(fetchBooksReducer, reducerInit);
 
 	const onSearchBookHandler = (e) => {
@@ -51,6 +53,9 @@ const NewBooksList = () => {
 			);
 
 			if (!response.ok) {
+				if (!Object.keys(response.data).length) {
+					throw new Error('Error! Book not found!');
+				}
 				throw new Error(
 					'Error! I fell down the stairs while fetching your book!'
 				);
@@ -83,8 +88,9 @@ const NewBooksList = () => {
 
 	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION */
 	useEffect(() => {
-		bookState.bookFetched && scrollIntoView();
-	}, [bookState.bookFetched]);
+		// bookState.bookFetched && scrollIntoView();
+		scrollIntoView();
+	}, []);
 
 	const scrollIntoView = () => {
 		booksListRef.current.scrollIntoView({
@@ -101,13 +107,8 @@ const NewBooksList = () => {
 	);
 
 	if (!bookState.bookIsLoading && bookState.bookFetched) {
-		bookBox = bookState.foundBook.map((book, index) => (
-			<div
-				key={Math.random() + index}
-				className="[ book-box ] [ box ] [ stack ]"
-			>
-				{/* <img src={bookCoverSrc} alt="" /> */}
-
+		bookBox = bookState.foundBook.map((book) => (
+			<div key={uuidv4()} className="[ book-box ] [ box ] [ stack ]">
 				<div className="stack">
 					<h4>{book.title}</h4>
 					<p>
@@ -121,10 +122,26 @@ const NewBooksList = () => {
 				</div>
 
 				<div className="stack">
-					<button className="button-secondary button-small">
+					<button
+						onClick={() =>
+							listDispatch({
+								type: 'ADD_BOOK',
+								payload: book,
+							})
+						}
+						className="button-secondary button-small"
+					>
 						Already read
 					</button>
-					<button className="button-secondary button-small">
+					<button
+						onClick={() =>
+							listDispatch({
+								type: 'ADD_WISH',
+								payload: book,
+							})
+						}
+						className="button-secondary button-small"
+					>
 						Want to read
 					</button>
 				</div>
@@ -138,12 +155,16 @@ const NewBooksList = () => {
 		);
 	}
 	let inputInvalid = bookState.touched && !bookState.searchValid;
+
 	return (
-		<div className="full-bleed">
-			<Region regionId={'new-books-region'}>
+		<div className="[ full-bleed ] [ margin-top-3 ]">
+			<Region
+				regionId={'new-books-region'}
+				regionBackground={'background-secondary'}
+			>
 				<Wrapper>
 					<div className="stack">
-						<form action="" className="wrap">
+						<form ref={booksListRef} action="" className="wrap">
 							<div className="input-wrapper">
 								<input
 									onChange={onSearchBookHandler}
@@ -168,9 +189,7 @@ const NewBooksList = () => {
 							</button>
 						</form>
 
-						<div ref={booksListRef} className="cluster">
-							{bookBox}
-						</div>
+						<div className="cluster">{bookBox}</div>
 						{bookState.bookIsLoading && (
 							<div className="loader-container">
 								<p>Searching for your book</p>

@@ -8,11 +8,12 @@ const Hero = () => {
 		<Region regionId={'hero'}>
 			<div className="stack">
 				<h1>
-					You <span className="text-underline">don't like</span>{' '}
+					You{' '}
+					<span className="text-underline color-red">don't like</span>{' '}
 					reading books but here we are dear
-					<span className="text-underline"> reader!</span>
+					<span className="text-underline color-red"> reader!</span>
 				</h1>
-				<h4 className="color-red">
+				<h4>
 					Let's find a book that your beautiful brain will never read
 					to the end!
 				</h4>

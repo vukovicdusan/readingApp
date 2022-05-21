@@ -222,9 +222,17 @@ label {
 }
 
 /** ======== UTILITY CLASSES ======== */
-/*Utility classea are reusable classes that do one simple job*/
+/*Utility classes are reusable classes that do one simple job*/
 .color-red {
 	color: var(--color-red) !important;
+}
+
+.background-primary {
+	background-color: var(--background-primary);
+}
+
+.background-secondary {
+	background-color: var(--background-secondary);
 }
 
 .text-underline {
@@ -273,7 +281,7 @@ label {
 
 /** ==== WRAPPER ==== */
 .wrapper {
-	width: --width-measure;
+	/* width: --width-measure; */
 	width: clamp(16rem, 93vw, 75rem);
 	margin-left: auto;
 	margin-right: auto;
@@ -405,8 +413,6 @@ header {
 #new-books-region {
 	transition: 0.2s ease;
 	--stack-space: var(--s3);
-	background-color: var(--background-secondary);
-	margin-top: var(--s2);
 }
 
 .full-bleed {
