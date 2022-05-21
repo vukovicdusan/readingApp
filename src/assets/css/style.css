@@ -402,6 +402,7 @@ header {
 #hero {
 	--stack-align: center;
 	text-align: center;
+	padding-bottom: 0;
 }
 
 #hero img {

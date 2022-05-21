@@ -1,6 +1,7 @@
 import './assets/css/style.css';
 import { Fragment } from 'react';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Wrapper from './UI/Wrapper';
 import Hero from './components/Hero';
 import { Route, Routes, Navigate } from 'react-router-dom';
@@ -8,25 +9,6 @@ import NewBooksList from './components/NewBooksList';
 import OldBooksList from './components/OldBooksList';
 import WishBooksList from './components/WishBooksList';
 import BooksContextProvider from './context/BooksContext';
-
-// let booksStorage = [
-// 	{
-// 		id: '234',
-// 		title: 'the lord of the rings',
-// 		author: 'JJR Tolkien',
-// 		publish: '1951',
-// 		readIt: true,
-// 		onWishList: false,
-// 	},
-// 	{
-// 		id: '567',
-// 		title: 'Panambra',
-// 		author: 'Mr Sloan',
-// 		publish: '1929',
-// 		readIt: false,
-// 		onWishList: true,
-// 	},
-// ];
 
 function App() {
 	return (
@@ -56,6 +38,7 @@ function App() {
 					</Routes>
 				</BooksContextProvider>
 			</Wrapper>
+			<Footer></Footer>
 		</Fragment>
 	);
 }
