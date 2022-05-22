@@ -47,17 +47,30 @@ const BookBox = (props) => {
 
 						<div className="stack">
 							{props.whatList === 'wish' && (
-								<button
-									onClick={() =>
-										listDispatch({
-											type: 'REMOVE_WISH',
-											payload: book.id,
-										})
-									}
-									className="button-secondary button-small"
-								>
-									I don't wanna read this
-								</button>
+								<div className="stack">
+									<button
+										onClick={() =>
+											listDispatch({
+												type: 'REMOVE_WISH',
+												payload: book.id,
+											})
+										}
+										className="button-secondary button-small"
+									>
+										I don't wanna read this
+									</button>
+									<button
+										onClick={() =>
+											listDispatch({
+												type: 'WISH_COME_TRUE',
+												payload: book.id,
+											})
+										}
+										className="button-secondary button-small"
+									>
+										I finished it!
+									</button>
+								</div>
 							)}
 							{props.whatList === 'old' && (
 								<button
@@ -117,7 +130,7 @@ const BookBox = (props) => {
 			);
 		});
 	}
-
+	console.log(books);
 	return <div className="cluster">{bookBox}</div>;
 };
 

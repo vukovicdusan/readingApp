@@ -106,7 +106,7 @@ const NewBooksList = (props) => {
 					</p>
 					<p>
 						Year of publishing:{' '}
-						<span className="text-bold">{book.publishYear}</span>
+						<span className="text-bold">{book.published}</span>
 					</p>
 				</div>
 

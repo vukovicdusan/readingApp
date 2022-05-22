@@ -34,13 +34,22 @@ const booksListReducer = (state, action) => {
 							title: action.payload.title,
 							author: action.payload.author_name,
 							published: action.payload.published,
-							readIt: action.payload.readIt,
+							readIt: false,
 							onWishList: true,
 						},
 				  ]
 				: state;
 		case 'REMOVE_WISH':
 			return state.filter((book) => book.id !== action.payload);
+		case 'WISH_COME_TRUE':
+			for (const book of state) {
+				if (book.id === action.payload.id) {
+					book.onWishList = false;
+					// book.readIt = true;
+					break;
+				}
+			}
+			return state;
 		case 'ADD_MEMO':
 			for (const book of state) {
 				if (book.id === action.payload.id) {
