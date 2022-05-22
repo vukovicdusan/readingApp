@@ -6,17 +6,12 @@ import { BooksContext } from '../context/BooksContext';
 const OldBooksList = (props) => {
 	const { books, listDispatch } = useContext(BooksContext);
 	const booksListRef = useRef();
-	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION */
+
+	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION from BookLists component */
 	useEffect(() => {
-		scrollIntoView();
+		props.scrollIntoView(booksListRef);
 	}, []);
 
-	const scrollIntoView = () => {
-		booksListRef.current.scrollIntoView({
-			behavior: 'smooth',
-			block: 'start',
-		});
-	};
 	let bookBox = (
 		<div className="[ box ]">
 			<p>No books here at the moment milord.</p>

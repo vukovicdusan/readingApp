@@ -20,23 +20,23 @@ const Hero = () => {
 				<img src={arrow} alt="arrow" className="margin-top-2" />
 				<ul className="[ wrap ] [ margin-top-3 ]">
 					<NavLink
-						to="new-books"
+						to="/book-lists/new-books"
 						// activeClassName="active-list"
 						className="button"
 					>
 						What can I read?
 					</NavLink>
 
-					<NavLink to="old-books" className="button">
+					<NavLink to="/book-lists/old-books" className="button">
 						What have I read?
 					</NavLink>
 
-					<NavLink to="wish-books" className="button">
+					<NavLink to={'/book-lists/wish-books'} className="button">
 						What do I want to read?
 					</NavLink>
 				</ul>
 			</div>
-			<Outlet></Outlet>
+			{/* <Outlet></Outlet> */}
 		</Region>
 	);
 };

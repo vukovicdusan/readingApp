@@ -9,6 +9,7 @@ import NewBooksList from './components/NewBooksList';
 import OldBooksList from './components/OldBooksList';
 import WishBooksList from './components/WishBooksList';
 import BooksContextProvider from './context/BooksContext';
+import BookLists from './components/BookLists';
 
 function App() {
 	return (
@@ -16,25 +17,16 @@ function App() {
 			<Header></Header>
 			<Wrapper>
 				<BooksContextProvider>
+					<Hero></Hero>
 					<Routes>
 						<Route
 							path="/"
-							element={<Navigate replace to="/hero" />}
+							element={<Navigate replace to="/book-lists" />}
 						></Route>
-						<Route path="/hero/*" element={<Hero></Hero>}>
-							<Route
-								path="new-books"
-								element={<NewBooksList></NewBooksList>}
-							></Route>
-							<Route
-								path="old-books"
-								element={<OldBooksList></OldBooksList>}
-							></Route>
-							<Route
-								path="wish-books"
-								element={<WishBooksList></WishBooksList>}
-							></Route>
-						</Route>
+						<Route
+							path="/book-lists/*"
+							element={<BookLists></BookLists>}
+						></Route>
 					</Routes>
 				</BooksContextProvider>
 			</Wrapper>

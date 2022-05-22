@@ -15,7 +15,7 @@ const reducerInit = {
 	bookFetched: false,
 };
 
-const NewBooksList = () => {
+const NewBooksList = (props) => {
 	const booksListRef = useRef();
 	const { listDispatch } = useContext(BooksContext);
 	const [bookState, dispatch] = useReducer(fetchBooksReducer, reducerInit);
@@ -35,7 +35,6 @@ const NewBooksList = () => {
 
 	const searchSubmitHandler = (e) => {
 		e.preventDefault();
-
 		dispatch({
 			type: 'SUBMIT',
 		});
@@ -86,18 +85,11 @@ const NewBooksList = () => {
 		}
 	};
 
-	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION */
+	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION from BookLists component */
 	useEffect(() => {
 		// bookState.bookFetched && scrollIntoView();
-		scrollIntoView();
+		props.scrollIntoView(booksListRef);
 	}, []);
-
-	const scrollIntoView = () => {
-		booksListRef.current.scrollIntoView({
-			behavior: 'smooth',
-			block: 'start',
-		});
-	};
 
 	let bookBox = (
 		<div className="[ box ]">
