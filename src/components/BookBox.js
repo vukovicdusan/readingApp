@@ -1,8 +1,18 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { BooksContext } from '../context/BooksContext';
 
 const BookBox = (props) => {
 	const { books, listDispatch } = useContext(BooksContext);
+	const [dropdownOpen, setDropdownOpen] = useState('');
+	const [memoState, setMemoState] = useState('');
+
+	const onMemoInputHandler = (e) => {
+		setMemoState(e.target.value);
+	};
+
+	const onDropdownHandler = (id) => {
+		dropdownOpen === '' ? setDropdownOpen(id) : setDropdownOpen('');
+	};
 
 	let bookBox = (
 		<div className="[ box ]">
@@ -62,12 +72,52 @@ const BookBox = (props) => {
 									Didn't read this
 								</button>
 							)}
+
+							<button
+								onClick={() => onDropdownHandler(book.id)}
+								className={
+									dropdownOpen === book.id
+										? '[ button-small ] [ button-secondary ] [ dropdown-open ]'
+										: '[ button-small ] [ button-secondary ] [ dropdown-closed ]'
+								}
+							>
+								Message to myself
+							</button>
+							<div className="dropdown">
+								<form action="" className="stack">
+									{/* <label htmlFor="memo">Message</label> */}
+									<textarea
+										onChange={onMemoInputHandler}
+										name="memo"
+										id="memo"
+										cols="30"
+										rows="5"
+										defaultValue={book.memo && book.memo}
+									></textarea>
+									<button
+										onClick={(e) => {
+											e.preventDefault();
+											listDispatch({
+												type: 'ADD_MEMO',
+												payload: {
+													id: book.id,
+													message: memoState,
+												},
+											});
+										}}
+										className="button-secondary button-small"
+									>
+										Save
+									</button>
+								</form>
+							</div>
 						</div>
 					</div>
 				)
 			);
 		});
 	}
+
 	return <div className="cluster">{bookBox}</div>;
 };
 

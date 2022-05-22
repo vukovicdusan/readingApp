@@ -519,3 +519,14 @@ header + .wrapper {
 footer {
 	flex-shrink: 0;
 }
+
+/** ==== DROPDOWN ==== */
+.dropdown-closed + .dropdown {
+	height: 0;
+	display: none;
+}
+
+.dropdown-open + .dropdown {
+	height: 100%;
+	display: block;
+}

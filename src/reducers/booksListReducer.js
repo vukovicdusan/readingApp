@@ -41,7 +41,14 @@ const booksListReducer = (state, action) => {
 				: state;
 		case 'REMOVE_WISH':
 			return state.filter((book) => book.id !== action.payload);
-
+		case 'ADD_MEMO':
+			for (const book of state) {
+				if (book.id === action.payload.id) {
+					book.memo = action.payload.message;
+					break;
+				}
+			}
+			return state;
 		default:
 			return state;
 	}
