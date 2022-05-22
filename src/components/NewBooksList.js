@@ -41,7 +41,7 @@ const NewBooksList = (props) => {
 
 		bookState.searchValid && fetchBooks();
 	};
-
+	/* FETCH SEARCHED BOOKS */
 	const fetchBooks = async () => {
 		dispatch({
 			type: 'FETCH_INIT',
@@ -50,11 +50,8 @@ const NewBooksList = (props) => {
 			const response = await fetch(
 				'http://openlibrary.org/search.json?q=' + bookState.searchedBook
 			);
-
+			/* CHECKING FOR ERROR RESPONSE*/
 			if (!response.ok) {
-				if (!Object.keys(response.data).length) {
-					throw new Error('Error! Book not found!');
-				}
 				throw new Error(
 					'Error! I fell down the stairs while fetching your book!'
 				);
@@ -149,49 +146,45 @@ const NewBooksList = (props) => {
 	let inputInvalid = bookState.touched && !bookState.searchValid;
 
 	return (
-		<div className="[ full-bleed ] [ margin-top-3 ]">
-			<Region
-				regionId={'new-books-region'}
-				regionBackground={'background-secondary'}
-			>
-				<Wrapper>
-					<div className="stack">
-						<form ref={booksListRef} action="" className="wrap">
-							<div className="input-wrapper">
-								<input
-									onChange={onSearchBookHandler}
-									id="book-name"
-									type="text"
-									onBlur={onBlurHandler}
-									className={
-										inputInvalid ? 'invalid-input' : ''
-									}
-								/>
-								<label htmlFor="book-name">
-									{inputInvalid
-										? 'Give me a book human!'
-										: 'Book Name'}
-								</label>
-							</div>
-							<button
-								onClick={searchSubmitHandler}
-								className="button-secondary"
-							>
-								Search
-							</button>
-						</form>
+		<Region
+			regionId={'new-books-region'}
+			regionBackground={'background-secondary'}
+		>
+			<Wrapper>
+				<div className="stack">
+					<form ref={booksListRef} action="" className="wrap">
+						<div className="input-wrapper">
+							<input
+								onChange={onSearchBookHandler}
+								id="book-name"
+								type="text"
+								onBlur={onBlurHandler}
+								className={inputInvalid ? 'invalid-input' : ''}
+							/>
+							<label htmlFor="book-name">
+								{inputInvalid
+									? 'Give me a book human!'
+									: 'Book Name'}
+							</label>
+						</div>
+						<button
+							onClick={searchSubmitHandler}
+							className="button-secondary"
+						>
+							Search
+						</button>
+					</form>
 
-						<div className="cluster">{bookBox}</div>
-						{bookState.bookIsLoading && (
-							<div className="loader-container">
-								<p>Searching for your book</p>
-								<span className="three-dots"></span>
-							</div>
-						)}
-					</div>
-				</Wrapper>
-			</Region>
-		</div>
+					<div className="cluster">{bookBox}</div>
+					{bookState.bookIsLoading && (
+						<div className="loader-container">
+							<p>Searching for your book</p>
+							<span className="three-dots"></span>
+						</div>
+					)}
+				</div>
+			</Wrapper>
+		</Region>
 	);
 };
 

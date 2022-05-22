@@ -1,4 +1,4 @@
-import { Outlet, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import NewBooksList from './NewBooksList';
 import OldBooksList from './OldBooksList';
 import WishBooksList from './WishBooksList';

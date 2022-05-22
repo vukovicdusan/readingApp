@@ -1,9 +1,17 @@
 import Wrapper from '../UI/Wrapper';
 import Region from '../UI/Region';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import arrow from '../assets/css/img/arrow.png';
+import { useContext, useState } from 'react';
+import { ListContext } from '../context/ListContext';
 
 const Hero = () => {
+	const { whatListHandler } = useContext(ListContext);
+	// const [whatList, setWhatList] = useState('');
+	// const whatListHandler = (list) => {
+	// 	setWhatList(list);
+	// };
+	// console.log(whatList);
 	return (
 		<Region regionId={'hero'}>
 			<div className="stack">
@@ -20,6 +28,7 @@ const Hero = () => {
 				<img src={arrow} alt="arrow" className="margin-top-2" />
 				<ul className="[ wrap ] [ margin-top-3 ]">
 					<NavLink
+						onClick={() => whatListHandler('new')}
 						to="/book-lists/new-books"
 						// activeClassName="active-list"
 						className="button"
@@ -27,11 +36,19 @@ const Hero = () => {
 						What can I read?
 					</NavLink>
 
-					<NavLink to="/book-lists/old-books" className="button">
+					<NavLink
+						onClick={() => whatListHandler('old')}
+						to="/book-lists/old-books"
+						className="button"
+					>
 						What have I read?
 					</NavLink>
 
-					<NavLink to={'/book-lists/wish-books'} className="button">
+					<NavLink
+						onClick={() => whatListHandler('wish')}
+						to={'/book-lists/wish-books'}
+						className="button"
+					>
 						What do I want to read?
 					</NavLink>
 				</ul>

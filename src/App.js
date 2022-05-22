@@ -5,10 +5,11 @@ import Footer from './components/Footer';
 import Wrapper from './UI/Wrapper';
 import Hero from './components/Hero';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import NewBooksList from './components/NewBooksList';
-import OldBooksList from './components/OldBooksList';
-import WishBooksList from './components/WishBooksList';
+// import NewBooksList from './components/NewBooksList';
+// import OldBooksList from './components/OldBooksList';
+// import WishBooksList from './components/WishBooksList';
 import BooksContextProvider from './context/BooksContext';
+import ListContextProvider from './context/ListContext';
 import BookLists from './components/BookLists';
 
 function App() {
@@ -17,17 +18,19 @@ function App() {
 			<Header></Header>
 			<Wrapper>
 				<BooksContextProvider>
-					<Hero></Hero>
-					<Routes>
-						<Route
-							path="/"
-							element={<Navigate replace to="/book-lists" />}
-						></Route>
-						<Route
-							path="/book-lists/*"
-							element={<BookLists></BookLists>}
-						></Route>
-					</Routes>
+					<ListContextProvider>
+						<Hero></Hero>
+						<Routes>
+							<Route
+								path="/"
+								element={<Navigate replace to="/book-lists" />}
+							></Route>
+							<Route
+								path="/book-lists/*"
+								element={<BookLists></BookLists>}
+							></Route>
+						</Routes>
+					</ListContextProvider>
 				</BooksContextProvider>
 			</Wrapper>
 			<Footer></Footer>
