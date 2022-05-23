@@ -74,7 +74,7 @@ const booksListReducer = (state, action) => {
 				state.filter((book) => book.id !== action.payload),
 				state.map((book) =>
 					book.id === action.payload
-						? { ...book, readingNow: true }
+						? { ...book, readingNow: true ? false : true }
 						: book
 				)
 			);
