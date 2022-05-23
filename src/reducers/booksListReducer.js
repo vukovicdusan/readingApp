@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const booksListReducer = (state, action) => {
 	switch (action.type) {
+		/** ADDING BOOK TO THE READ BOOKS LIST */
 		case 'ADD_BOOK':
 			const isDuplicateBook = state.some(
 				(book) => book.title === action.payload.title
@@ -19,6 +20,8 @@ const booksListReducer = (state, action) => {
 						},
 				  ]
 				: state;
+
+		/** REMOVING THE BOOK COMPLETELY */
 		case 'REMOVE_BOOK':
 			return state.filter((book) => book.id !== action.payload);
 		case 'ADD_WISH':
@@ -39,25 +42,42 @@ const booksListReducer = (state, action) => {
 						},
 				  ]
 				: state;
+
+		/** REMOVING THE BOOK COMPLETELY */
 		case 'REMOVE_WISH':
 			return state.filter((book) => book.id !== action.payload);
+
+		/** MOVING THE BOOK FROM WISH LIST TO READ LIST */
 		case 'WISH_COME_TRUE':
-			for (const book of state) {
-				if (book.id === action.payload) {
-					book.onWishList = false;
-					book.readIt = true;
-					break;
-				}
-			}
-			return state;
+			return (
+				state.filter((book) => book.id === action.payload),
+				state.map((book) =>
+					book.id === action.payload
+						? { ...book, onWishList: false, readIt: true }
+						: book
+				)
+			);
+
+		/** ADDING THE MESSAGE TO THE BOOK  */
 		case 'ADD_MEMO':
-			for (const book of state) {
-				if (book.id === action.payload.id) {
-					book.memo = action.payload.message;
-					break;
-				}
-			}
-			return state;
+			return (
+				state.filter((book) => book.id !== action.payload.id),
+				state.map((book) =>
+					book.id === action.payload.id
+						? { ...book, memo: action.payload.message }
+						: book
+				)
+			);
+		/** ADDING THE READING NOW CHECK TO THE BOOK  */
+		case 'READING_NOW':
+			return (
+				state.filter((book) => book.id !== action.payload),
+				state.map((book) =>
+					book.id === action.payload
+						? { ...book, readingNow: true }
+						: book
+				)
+			);
 		default:
 			return state;
 	}

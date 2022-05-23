@@ -1,6 +1,6 @@
+//USE THIS TO GIVE ELEMENTS TOP AND BOTTOM PADDING
+//ADD ID PROP AND BACKGROUND PROP TO THE REGION IF ANY OF THE CSS SHOULD BE OVERRIDEN
 const Region = (props) => {
-	//region UI element giving component a top and bottom padding
-	//class for the region component if some of the properties have to be overriden.
 	let regionId = '';
 	if (typeof props.regionId !== 'undefined') {
 		regionId = props.regionId;

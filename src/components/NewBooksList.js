@@ -17,6 +17,7 @@ const reducerInit = {
 
 const NewBooksList = (props) => {
 	const booksListRef = useRef();
+	const loadedBooksRef = useRef();
 	const { listDispatch } = useContext(BooksContext);
 	const [bookState, dispatch] = useReducer(fetchBooksReducer, reducerInit);
 
@@ -38,9 +39,9 @@ const NewBooksList = (props) => {
 		dispatch({
 			type: 'SUBMIT',
 		});
-
 		bookState.searchValid && fetchBooks();
 	};
+
 	/* FETCH SEARCHED BOOKS */
 	const fetchBooks = async () => {
 		dispatch({
@@ -84,10 +85,15 @@ const NewBooksList = (props) => {
 
 	/** USEEFFECT FOR SCROLL INTO VIEW FUNCTION from BookLists component */
 	useEffect(() => {
-		// bookState.bookFetched && scrollIntoView();
 		props.scrollIntoView(booksListRef);
 	}, []);
 
+	/** SCROLL INTO VIEW ON FETCH  */
+	useEffect(() => {
+		bookState.bookFetched && props.scrollIntoView(loadedBooksRef);
+	}, [bookState.bookFetched]);
+
+	/** EMPTY BOOK STORAGE  */
 	let bookBox = (
 		<div className="[ box ]">
 			<p>No books here at the moment milord.</p>
@@ -95,6 +101,7 @@ const NewBooksList = (props) => {
 		</div>
 	);
 
+	/** NOT EMPTY BOOK STORAGE  */
 	if (!bookState.bookIsLoading && bookState.bookFetched) {
 		bookBox = bookState.foundBook.map((book) => (
 			<div key={uuidv4()} className="[ book-box ] [ box ] [ stack ]">
@@ -136,6 +143,7 @@ const NewBooksList = (props) => {
 				</div>
 			</div>
 		));
+		/** FETCH ERROR MESSAGE  */
 	} else if (bookState.fetchError !== null) {
 		bookBox = (
 			<div className="[ box ] [ wrap ]">
@@ -143,6 +151,7 @@ const NewBooksList = (props) => {
 			</div>
 		);
 	}
+
 	let inputInvalid = bookState.touched && !bookState.searchValid;
 
 	return (
@@ -175,7 +184,9 @@ const NewBooksList = (props) => {
 						</button>
 					</form>
 
-					<div className="cluster">{bookBox}</div>
+					<div ref={loadedBooksRef} className="cluster">
+						{bookBox}
+					</div>
 					{bookState.bookIsLoading && (
 						<div className="loader-container">
 							<p>Searching for your book</p>

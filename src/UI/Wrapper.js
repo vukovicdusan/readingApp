@@ -1,10 +1,6 @@
-//UI element used for wrapping page content giving it width, side padding and centering it
+//USE THIS TO WRAP THE CONTENT TO GIVE IT WIDTH AND SIDE PADDING
 const Wrapper = (props) => {
-	return (
-		<div className="wrapper">
-			{props.children}
-		</div>
-	)
-}
+	return <div className="wrapper">{props.children}</div>;
+};
 
 export default Wrapper;
