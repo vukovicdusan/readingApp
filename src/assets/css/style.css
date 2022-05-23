@@ -507,15 +507,20 @@ header {
 footer {
 	border-top: 2px solid var(--color-red);
 	padding-block: var(--s-3);
+	min-height: 100%;
 }
 
-body {
+#root {
+	position: relative;
+	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 }
 header + .wrapper {
-	flex: 4 0 auto;
+	flex: 1 0 auto;
+	min-height: calc(100vh - 2.5rem);
 }
+
 footer {
 	flex-shrink: 0;
 }

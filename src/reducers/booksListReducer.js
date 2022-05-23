@@ -43,9 +43,9 @@ const booksListReducer = (state, action) => {
 			return state.filter((book) => book.id !== action.payload);
 		case 'WISH_COME_TRUE':
 			for (const book of state) {
-				if (book.id === action.payload.id) {
+				if (book.id === action.payload) {
 					book.onWishList = false;
-					// book.readIt = true;
+					book.readIt = true;
 					break;
 				}
 			}
